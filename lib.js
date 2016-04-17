@@ -1,5 +1,6 @@
 students = [];
 groups = [];
+tasks = [];
 
 // Students functions
 // You can add, remove and show students.
@@ -86,9 +87,29 @@ function createGroup (name, students) {
 	return console.log(`Group with name «${name}» of ${students.length} guys has been created`);
 
 }
-function createTask (type) {
 
+// About type:
+// 1 - task for command
+// 2 - individual task
+function createTask (type, name, description, participants) {
+	if (type !== 1 || type !== 2) {
+		return console.log('Type of the task is undefined');
+	}
+	if (!name) {
+		return console.log('Please provide the name of the task.');
+	}
+	if (!description) {
+		return console.log('Please provide the description of the task.');
+	}
+	var task = {
+		id: tasks.length,
+		type: 1,
+		name: name,
+		description: description,
+	}
+	tasks.push(task)
 }
 
-createGroup('Science & Research', [0, 1, 2]);
+// createGroup('Science & Research', [0, 1, 2]);
+createTask(1)
 
