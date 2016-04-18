@@ -1,36 +1,55 @@
+teachers = [
+ {
+ 	id: 0,
+ 	name: 'Аристотель',
+ 	surname: ''
+ },
+ {
+ 	id: 1,
+ 	name: 'Дейл',
+ 	surname: 'Карнеги'
+ },
+ {
+ 	id: 2,
+ 	name: 'Константин',
+ 	surname: '(Дмитревич) Ушинский'
+ }
+]
 students = [];
 groups = [];
 tasks = [];
 marks = [];
 
+studentPriorityList = [];
+teacherPriorityList = [];
+
 // Students functions
 // You can add, remove and show students.
-function addStudent (name, surname, phone, address) {
+function addStudent (student) {
 	var actionType = '[addStudent]:';
-	if (!name) {
+	if (!student.name) {
 		return console.log(actionType, 'Name of the student is not defined.');
 	}
-	if (!surname) {
+	if (!student.surname) {
 		return console.log(actionType, 'Surname of the student is not defined.');
 	}
-	if (!phone) {
+	if (!student.phone) {
 		return console.log(actionType, 'Please provide a phone of the student.');
 	}
 	var phoneRegex = new RegExp("^\\+[0-9]*$");
-	if (!phoneRegex.test(phone)) {
+	if (!phoneRegex.test(student.phone)) {
 		return console.log(actionType, 'Phone number is invalid');
 	}
-	const studentID = students.length;
-	const student = {
-		id: studentID,
-		name: name,
-		surname: surname,
-		phone: phone,
-		address: address || ''
-	};
+
+	student.id = students.length;
 	students.push(student);
-	return console.log(actionType, `Student ${name} ${surname} has been added successfully.`);
+	return console.log(actionType, `Student ${student.name} ${student.surname} has been added successfully.`);
 }
+
+addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
+addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
+addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
+// showStudents(students);
 
 function removeStudent (id) {
 	var actionType = '[removeStudent]:';
@@ -77,11 +96,6 @@ function isTaskExist (id) {
 	return false;
 }
 
-addStudent('Ivan', 'Ivanov', '+123');
-addStudent('Ivan', 'Ivanov', '+123');
-addStudent('Ivan', 'Ivanov', '+123');
-// showStudents(students);
-
 function createGroup (name, students) {
 	var actionType = '[createGroup]:';
 	if (!name) {
@@ -112,87 +126,113 @@ function createGroup (name, students) {
 	groups.push(group);
 	return console.log(actionType, `Group «${name}» of ${students.length} guys has been created.`);
 }
-createGroup('The Guardians', [1, 2]);
-createGroup('Science & Research', [0, 1, 2]);
+// createGroup('The Guardians', [1, 2]);
+// createGroup('Science & Research', [0, 1, 2]);
 
 // About type:
 // 1 - task for command
 // 2 - individual task
-function createTask (type, name, description, participants) {
+function createTask (task) {
 	var actionType = '[createTask]:';
-	if (type > 2) {
+	if (task.type > 2) {
 		return console.log(actionType, 'Type of the task is undefined');
 	}
-	if (!name) {
+	if (!task.name) {
 		return console.log(actionType, 'Please provide the name of the task.');
 	}
-	if (!description) {
+	if (!task.description) {
 		return console.log(actionType, 'Please provide the description of the task.');
 	}
-	if (typeof participants !== 'number') {
+	if (typeof task.participants !== 'number') {
 		return console.log(actionType, 'You have to provide an ID of participant or a group.');
 	}
-	if (type === 2 && !isGroupExist(participants)) {
-		return console.log(actionType, `Group with this ID (${participants}) does not exist.`);
+	if (task.type === 2 && !isGroupExist(task.participants)) {
+		return console.log(actionType, `Group with this ID (${task.participants}) does not exist.`);
 	}
-	if (type === 1 && !isStudentExist(participants)) {
-		return console.log(actionType, `Student with this ID (${participants}) does not exist`);
+	if (task.type === 1 && !isStudentExist(task.participants)) {
+		return console.log(actionType, `Student with this ID (${task.participants}) does not exist`);
 	}
 
-	var task = {
-		id: tasks.length,
-		type: 1,
-		name: name,
-		description: description,
-		participants: participants
-	}
+	task.id = tasks.length;
 	tasks.push(task);
-	return console.log(actionType, `Task «${name}» has been created.`);
+	return console.log(actionType, `Task «${task.name}» — ${task.description} — has been created.`);
 }
 
-createTask(2, 'name', 'do something', 0);
+// createTask({
+// 	type: 2,
+// 	name: 'name',
+// 	description: 'Do a realtime application',
+// 	participants: 0
+// });
 console.log(tasks);
 
-function setMark(type, target, taskID, mark, comment) {
+function setMark (mark) {
 	var actionType = '[setMark]:';
-	if (type > 2) {
+	if (!mark.type || mark.type > 2) {
 		return console.log(actionType, 'Type of the mark is undefined');
 	}
-	if (type === 2 && !isGroupExist(participants)) {
-		return console.log(actionType, `Group with this ID (${participants}) does not exist.`);
+	if (mark.type === 2 && !isGroupExist(mark.target)) {
+		return console.log(actionType, `Group with this ID (${mark.target}) does not exist.`);
 	}
-	if (type === 1 && !isStudentExist(participants)) {
-		return console.log(actionType, `Student with this ID (${participants}) does not exist`);
+	if (mark.type === 1 && !isStudentExist(mark.target)) {
+		return console.log(actionType, `Student with this ID (${mark.target}) does not exist.`);
+	}
+	if (!isTaskExist(mark.taskID)) {
+		return console.log(actionType, `Task with ID ${mark.taskID} does not exist.`);
 	}
 
-	if (!mark) {
+	if (!mark.mark) {
 		return console.log(actionType, 'Please provide a mark 1-10');
-	} else if (mark > 10 || mark < 1) {
+	} else if (mark.mark > 10 || mark.mark < 1) {
 		return console.log(actionType, 'Mark must be in 1-10 only!');
-	}
-	var mark = {
-		type: type,
-		target: target,
-		taskID: taskID,
-		mark: mark,
-		comment: comment
 	}
 
 	marks.push(mark);
-	return console.log(actionType, `Mark ${mark} was set on ${target}`);
+	return console.log(actionType, `Mark ${mark.mark} was successfully set on (${mark.target})`);
 }
 
+// setMark({type: 2, target: 1, taskID: 0, mark: 7});
 
 
+// This is the function for student
+// to make a priority-oriented list of the teachers he/she wants to be in a group of.
+function createStudentPriorityList (list) {
+	if (typeof list.studentID === 'undefined') {
+		return console.log('Provide the id of the student and the list of the teachers, please.');
+	}
+	// Check if all the teachers are in the list, that provided.
+	// All teachers must be in the list.
+	if (list.teachersList.length !== teachers.length) {
+		return console.log(`There're ${teachers.length} teachers there. And only ${list.teachersList.length} was(were) given.`);
+	}
+	list.id = studentPriorityList.length;
+	studentPriorityList.push(list);
+}
 
+// createStudentPriorityList({
+	// studentID: 0,
+	// teachersList: [0, 1, 2]
+// });
 
+// This is the function for teacher
+// to make a priority-oriented list of the student he/she wants to teach.
+function createTeacherPriorityList (list) {
+	if (typeof list.teacherID === 'undefined') {
+		return console.log('Provide the id of the student and the list of the teachers, please.');
+	}
+	// Check if all the teachers are in the list, that provided.
+	// All teachers must be in the list.
+	if (list.studentsList.length !== teachers.length) {
+		return console.log(`There're ${teachers.length} teachers there. And only ${list.studentsList.length} was(were) given.`);
+	}
+	list.id = teacherPriorityList.length;
+	teacherPriorityList.push(list);
+}
 
-
-
-
-
-
-
+createTeacherPriorityList({
+	teacherID: 0,
+	studentsList: [0, 1, 2]
+});
 
 
 
