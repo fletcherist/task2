@@ -66,16 +66,46 @@ function showStudents (students) {
 }
 
 
-//
+// !!!
 // Existance functions & Tools.
-//
 function isStudentExist (id) {
 	for (var i = 0; i < students.length; i++) {
 		if (students[i].id === id) {
 			return true;
 		}
 	}
+	console.log(`Student with id ${id} does not exist.`);
 	return false;
+}
+
+function areStudentsInListExist (list) {
+	for (var i = 0; i < list.length; i++) {
+		var id = list[i];
+		if (!isStudentExist(id)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function isTeacherExist (id) {
+	for (var i = 0; i < teachers.length; i++) {
+		if (teachers[i].id === id) {
+			return true;
+		}
+	}
+	console.log(`Teacher with id ${id} does not exist.`);
+	return false;
+}
+
+function areTeachersInListExist (list) {
+	for (var i = 0; i < list.length; i++) {
+		var id = list[i];
+		if (!isTeacherExist(id)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 function isGroupExist (id) {
@@ -90,6 +120,7 @@ function isGroupExist (id) {
 function isTaskExist (id) {
 	for (var i = 0; i < tasks.length; i++) {
 		if (tasks[i].id === id) {
+
 			return true;
 		}
 	}
@@ -112,11 +143,8 @@ function createGroup (name, students) {
 		return console.log(actionType, `Student's list must not be empty.`);
 	}
 
-	for (var i = 0; i < students.length; i++) {
-		var id = students[i];
-		if (!isStudentExist(id)) {
-			return console.log(actionType, `Student with id ${id} does not exist.`);
-		}
+	if (!areStudentsInListExist(students)) {
+		return console.log('Fix the bug above to continue.');
 	}
 	var group = {
 		id: groups.length,
@@ -126,7 +154,7 @@ function createGroup (name, students) {
 	groups.push(group);
 	return console.log(actionType, `Group «${name}» of ${students.length} guys has been created.`);
 }
-// createGroup('The Guardians', [1, 2]);
+createGroup('The Guardians', [1, 2]);
 // createGroup('Science & Research', [0, 1, 2]);
 
 // About type:
@@ -164,7 +192,6 @@ function createTask (task) {
 // 	description: 'Do a realtime application',
 // 	participants: 0
 // });
-console.log(tasks);
 
 function setMark (mark) {
 	var actionType = '[setMark]:';
@@ -203,10 +230,16 @@ function createStudentPriorityList (list) {
 	// Check if all the teachers are in the list, that provided.
 	// All teachers must be in the list.
 	if (list.teachersList.length !== teachers.length) {
-		return console.log(`There're ${teachers.length} teachers there. And only ${list.teachersList.length} was(were) given.`);
+		console.log(`There're ${students.length} teachers there. And only ${list.studentsList.length} was(were) given.`);
+		return console.log('All the students must be in list.');
 	}
+	if (!areTeachersInListExist(list.teachersList)) {
+		return console.log('Fix the bug above to continue.');
+	}
+
 	list.id = studentPriorityList.length;
 	studentPriorityList.push(list);
+	return console.log(`Priority list of teachers for the student ${list.teacherID} has been created successfully.`);
 }
 
 // createStudentPriorityList({
@@ -222,11 +255,16 @@ function createTeacherPriorityList (list) {
 	}
 	// Check if all the teachers are in the list, that provided.
 	// All teachers must be in the list.
-	if (list.studentsList.length !== teachers.length) {
-		return console.log(`There're ${teachers.length} teachers there. And only ${list.studentsList.length} was(were) given.`);
+	if (list.studentsList.length !== students.length) {
+		console.log(`There're ${students.length} students there. And only ${list.studentsList.length} was(were) given.`);
+		return console.log('All the students must be in list.');
+	}
+	if (!areStudentsInListExist(list.studentsList)) {
+		return console.log('Fix the bug above to continue.');
 	}
 	list.id = teacherPriorityList.length;
 	teacherPriorityList.push(list);
+	return console.log(`Priority list of students for the teacher ${list.teacherID} has been created successfully.`);
 }
 
 createTeacherPriorityList({
@@ -235,6 +273,9 @@ createTeacherPriorityList({
 });
 
 
+
+// The description and philosophy of the principles of
+// the following algorithm in the README.md
 
 
 
