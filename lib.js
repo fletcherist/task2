@@ -281,13 +281,20 @@ function getRating () {
 }
 
 function sortTeachersByRating () {
-	
+
 }
 
 function sortStudentsByRating () {
 
 }
 
+function spreadStudentsBetweenTeachers () {
+
+}
+
+function getTest () {
+	
+}
 
 
 
