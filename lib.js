@@ -2,19 +2,23 @@ teachers = [
  {
  	id: 0,
  	name: 'Аристотель',
- 	surname: ''
+ 	surname: '',
+ 	rating: 0,
  },
  {
  	id: 1,
  	name: 'Дейл',
- 	surname: 'Карнеги'
+ 	surname: 'Карнеги',
+ 	rating: 0
  },
  {
  	id: 2,
  	name: 'Константин',
- 	surname: '(Дмитревич) Ушинский'
+ 	surname: '(Дмитриевич) Ушинский',
+ 	rating: 0
  }
-]
+];
+
 students = [];
 groups = [];
 tasks = [];
@@ -42,13 +46,14 @@ function addStudent (student) {
 	}
 
 	student.id = students.length;
+	student.rating = 0;
 	students.push(student);
 	return console.log(actionType, `Student ${student.name} ${student.surname} has been added successfully.`);
 }
 
 addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
-addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
-addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
+addStudent({name: 'Mark', surname: 'Twen', phone: '+79109732483'});
+addStudent({name: 'Fyodor', surname: 'Dostoevsky', phone: '+79109732483'});
 // showStudents(students);
 
 function removeStudent (id) {
@@ -224,22 +229,23 @@ function setMark (mark) {
 // This is the function for student
 // to make a priority-oriented list of the teachers he/she wants to be in a group of.
 function createStudentPriorityList (list) {
+	var actionType = '[createStudentPriorityList]:';
 	if (typeof list.studentID === 'undefined') {
-		return console.log('Provide the id of the student and the list of the teachers, please.');
+		return console.log(actionType, 'Provide the id of the student and the list of the teachers, please.');
 	}
 	// Check if all the teachers are in the list, that provided.
 	// All teachers must be in the list.
 	if (list.teachersList.length !== teachers.length) {
-		console.log(`There're ${students.length} teachers there. And only ${list.studentsList.length} was(were) given.`);
+		console.log(actionType, `There're ${students.length} teachers there. And only ${list.studentsList.length} was(were) given.`);
 		return console.log('All the students must be in list.');
 	}
 	if (!areTeachersInListExist(list.teachersList)) {
-		return console.log('Fix the bug above to continue.');
+		return console.log(actionType, 'Fix the bug above to continue.');
 	}
 
 	list.id = studentPriorityList.length;
 	studentPriorityList.push(list);
-	return console.log(`Priority list of teachers for the student ${list.teacherID} has been created successfully.`);
+	return console.log(actionType, `Priority list of teachers for the student ${list.teacherID} has been created successfully.`);
 }
 
 // createStudentPriorityList({
@@ -250,35 +256,94 @@ function createStudentPriorityList (list) {
 // This is the function for teacher
 // to make a priority-oriented list of the student he/she wants to teach.
 function createTeacherPriorityList (list) {
+	var actionType = '[createTeacherPriorityList]:';
 	if (typeof list.teacherID === 'undefined') {
-		return console.log('Provide the id of the student and the list of the teachers, please.');
+		return console.log(actionType, 'Provide the id of the student and the list of the teachers, please.');
 	}
 	// Check if all the teachers are in the list, that provided.
 	// All teachers must be in the list.
 	if (list.studentsList.length !== students.length) {
-		console.log(`There're ${students.length} students there. And only ${list.studentsList.length} was(were) given.`);
+		console.log(actionTypeб `There're ${students.length} students there. And only ${list.studentsList.length} was(were) given.`);
 		return console.log('All the students must be in list.');
 	}
 	if (!areStudentsInListExist(list.studentsList)) {
-		return console.log('Fix the bug above to continue.');
+		return console.log(actionType, 'Fix the bug above to continue.');
 	}
+	if (!teacherWithIdExists(list.teacherID)) {
+		return console.log(actionType, 'Teacher with this id does not exists.');
+	}
+ 	// If already exists with this id return false!
+	if (findTeacherPriorityListById(list.teacherID)) {
+		return console.log(actionType, 'There is already a list of ' + list.teacherID + ' teacher.');
+	}
+
 	list.id = teacherPriorityList.length;
 	teacherPriorityList.push(list);
-	return console.log(`Priority list of students for the teacher ${list.teacherID} has been created successfully.`);
+	return console.log(actionType, `Priority list of students for the teacher ${list.teacherID} has been created successfully.`);
+}
+
+// Utility function.
+function findTeacherPriorityListById (id) {
+	for (var i = 0; i < teacherPriorityList.length; i++) {
+		if (teacherPriorityList[i].teacherID === id) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function teacherWithIdExists (id) {
+	for (var i = 0; i < teachers.length; i++) {
+		if (teachers[i].id === id) {
+			return true;
+		}
+	}
+	return false;
 }
 
 createTeacherPriorityList({
 	teacherID: 0,
 	studentsList: [0, 1, 2]
 });
-
+createTeacherPriorityList({
+	teacherID: 1,
+	studentsList: [0, 1, 2]
+});
+createTeacherPriorityList({
+	teacherID: 2,
+	studentsList: [0, 1, 2]
+});
 
 
 // The description and philosophy of the principles of
 // the following algorithm in the README.md
-function getRating () {
-
+function getStudentsRating (id) {
+	// id - student id.
+	var actionType = '[getRating]:';
+	// if the length of the teachers array
+	// does not equal to the length of teachers priority list
+	// show error message
+	if (teachers.length !== teacherPriorityList.length) {
+		console.log(`Only ${teacherPriorityList.length} of ${teachers.length} has provided`);
+		return console.log(actionType, 
+			'All teacher must make the priority lists before calculating the Rating.');
+	}
+	// Go through the teachers.
+	for (var i = 0; i < teacherPriorityList.length; i++) {
+		// Go thorugh the exacly teachers PRIORITY list.
+		// VAR E IS POWER.
+		var studentsList = teacherPriorityList[i].studentsList;
+		for (var e = 0; e < studentsList.length; e++) {
+			// Rating is the power (the place)
+			// 0 place = 3 points of rating if 3 students are there.
+			var RATING = studentsList.length - studentsList[e];
+			var studentID = studentsList[e];
+			console.log(studentsList[e]);
+		}
+	}
 }
+
+getStudentsRating();
 
 function sortTeachersByRating () {
 
@@ -293,7 +358,7 @@ function spreadStudentsBetweenTeachers () {
 }
 
 function getTest () {
-	
+
 }
 
 
