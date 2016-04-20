@@ -276,6 +276,18 @@ createTeacherPriorityList({
 
 // The description and philosophy of the principles of
 // the following algorithm in the README.md
+function getRating () {
+
+}
+
+function sortTeachersByRating () {
+	
+}
+
+function sortStudentsByRating () {
+
+}
+
 
 
 
