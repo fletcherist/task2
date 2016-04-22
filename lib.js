@@ -16,6 +16,12 @@ teachers = [
  	name: 'Константин',
  	surname: '(Дмитриевич) Ушинский',
  	rating: 0
+ },
+ {
+ 	id: 3,
+ 	name: 'Фридрих',
+ 	surname: 'Гегель',
+ 	rating: 0
  }
 ];
 
@@ -56,6 +62,10 @@ function addStudent (student) {
 addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
 addStudent({name: 'Mark', surname: 'Twen', phone: '+79109732483'});
 addStudent({name: 'Fyodor', surname: 'Dostoevsky', phone: '+79109732483'});
+addStudent({name: 'Lao', surname: 'Tzu', phone: '+79109732483'});
+addStudent({name: 'Leo', surname: 'Tolstoy', phone: '+79109732483'});
+addStudent({name: 'Phil', surname: 'Romanov', phone: '+79109732483'});
+addStudent({name: 'Friendih', surname: 'Nietcshe', phone: '+79109732483'});
 // showStudents(students);
 
 function removeStudent (id) {
@@ -252,16 +262,33 @@ function createStudentPriorityList (list) {
 
 createStudentPriorityList({
 	studentID: 0,
-	teachersList: [0, 1, 2]
+	teachersList: [0, 1, 2, 3]
 });
 createStudentPriorityList({
 	studentID: 1,
-	teachersList: [0, 1, 2]
+	teachersList: [0, 1, 2, 3]
 });
 createStudentPriorityList({
 	studentID: 2,
-	teachersList: [0, 1, 2]
+	teachersList: [0, 1, 2, 3]
 });
+createStudentPriorityList({
+	studentID: 3,
+	teachersList: [0, 1, 2, 3]
+});
+createStudentPriorityList({
+	studentID: 4,
+	teachersList: [0, 1, 2, 3]
+});
+createStudentPriorityList({
+	studentID: 5,
+	teachersList: [0, 1, 2, 3]
+});
+createStudentPriorityList({
+	studentID: 6,
+	teachersList: [0, 1, 2, 3]
+});
+
 
 // This is the function for teacher
 // to make a priority-oriented list of the student he/she wants to teach.
@@ -313,17 +340,20 @@ function teacherWithIdExists (id) {
 
 createTeacherPriorityList({
 	teacherID: 0,
-	studentsList: [0, 1, 2]
+	studentsList: [0, 1, 2, 3, 4, 5, 6]
 });
 createTeacherPriorityList({
 	teacherID: 1,
-	studentsList: [0, 1, 2]
+	studentsList: [0, 1, 2, 3, 4, 5, 6]
 });
 createTeacherPriorityList({
 	teacherID: 2,
-	studentsList: [0, 1, 2]
+	studentsList: [0, 1, 2, 3, 4, 5, 6]
 });
-
+createTeacherPriorityList({
+	teacherID: 3,
+	studentsList: [0, 1, 2, 3, 4, 5, 6]
+});
 
 // The description and philosophy of the principles of
 // the following algorithm in the README.md
@@ -412,21 +442,31 @@ function sortStudentsByRating () {
 			return 1
 		}
 	});
-	console.log(students);
+	// console.log(students);
 }
 
 function sortStudentsBetweenTeachers () {
+	var studentCounter = 0;
 	// How many students on 1 teacher?
-	var k = Math.floor(students.length / teachers.length);
+	var k = Math.ceil(students.length / teachers.length);
 	for (var i = 0; i < teachers.length; i++) {
 		var sortedPair = {
 			teacher: teachers[i].id,
 			students: []
 		}
+		while (sortedPair.students.length < k && studentCounter < students.length) {
+			// if already selected
+			sortedPair.students.push(students[studentCounter]);
+			studentCounter++;
+
+			// Push again if it is the last student.
+			if (studentCounter === students.length) {
+				sortedPair.students.push(students[studentCounter]);
+			}
+		}
 		studentsAndTeachersSorted.push(sortedPair);
+		console.log(sortedPair, k);
 	}
-	console.log(k);
-	
 }
 sortStudentsBetweenTeachers();
 
