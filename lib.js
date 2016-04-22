@@ -27,6 +27,8 @@ marks = [];
 studentPriorityList = [];
 teacherPriorityList = [];
 
+studentsAndTeachersSorted = [];
+
 // Students functions
 // You can add, remove and show students.
 function addStudent (student) {
@@ -159,7 +161,7 @@ function createGroup (name, students) {
 	groups.push(group);
 	return console.log(actionType, `Group «${name}» of ${students.length} guys has been created.`);
 }
-createGroup('The Guardians', [1, 2]);
+// createGroup('The Guardians', [1, 2]);
 // createGroup('Science & Research', [0, 1, 2]);
 
 // About type:
@@ -245,13 +247,21 @@ function createStudentPriorityList (list) {
 
 	list.id = studentPriorityList.length;
 	studentPriorityList.push(list);
-	return console.log(actionType, `Priority list of teachers for the student ${list.teacherID} has been created successfully.`);
+	return console.log(actionType, `Priority list of teachers for the student ${list.studentID} has been created successfully.`);
 }
 
-// createStudentPriorityList({
-	// studentID: 0,
-	// teachersList: [0, 1, 2]
-// });
+createStudentPriorityList({
+	studentID: 0,
+	teachersList: [0, 1, 2]
+});
+createStudentPriorityList({
+	studentID: 1,
+	teachersList: [0, 1, 2]
+});
+createStudentPriorityList({
+	studentID: 2,
+	teachersList: [0, 1, 2]
+});
 
 // This is the function for teacher
 // to make a priority-oriented list of the student he/she wants to teach.
@@ -263,7 +273,7 @@ function createTeacherPriorityList (list) {
 	// Check if all the teachers are in the list, that provided.
 	// All teachers must be in the list.
 	if (list.studentsList.length !== students.length) {
-		console.log(actionTypeб `There're ${students.length} students there. And only ${list.studentsList.length} was(were) given.`);
+		console.log(actionType, `There're ${students.length} students there. And only ${list.studentsList.length} was(were) given.`);
 		return console.log('All the students must be in list.');
 	}
 	if (!areStudentsInListExist(list.studentsList)) {
@@ -317,49 +327,107 @@ createTeacherPriorityList({
 
 // The description and philosophy of the principles of
 // the following algorithm in the README.md
-function getStudentsRating (id) {
-	// id - student id.
-	var actionType = '[getRating]:';
+function getStudentsRating () {
+	var actionType = '[getStudentsRating]:';
 	// if the length of the teachers array
 	// does not equal to the length of teachers priority list
 	// show error message
 	if (teachers.length !== teacherPriorityList.length) {
 		console.log(`Only ${teacherPriorityList.length} of ${teachers.length} has provided`);
 		return console.log(actionType, 
-			'All teacher must make the priority lists before calculating the Rating.');
+			'All teachers must make the priority lists before calculating the Rating.');
 	}
+	// Clear rating 
+	// before creating a new one.
+	clearStudentsRating();
 	// Go through the teachers.
 	for (var i = 0; i < teacherPriorityList.length; i++) {
 		// Go thorugh the exacly teachers PRIORITY list.
-		// VAR E IS POWER.
+		// VAR E IS THE STUDENT ID.
 		var studentsList = teacherPriorityList[i].studentsList;
 		for (var e = 0; e < studentsList.length; e++) {
 			// Rating is the power (the place)
 			// 0 place = 3 points of rating if 3 students are there.
 			var RATING = studentsList.length - studentsList[e];
-			var studentID = studentsList[e];
-			console.log(studentsList[e]);
+			// Let's implement this now.
+			students[e].rating += RATING;
 		}
+	}
+	return console.log(actionType, 'All students were got the rating.');
+}
+getStudentsRating();
+
+
+function clearStudentsRating () {
+	for (var i = 0; i < students.length; i++) {
+		students[i].rating = 0;
 	}
 }
 
-getStudentsRating();
+function clearTeachersRating () {
+	for (var i = 0; i < teachers.length; i++) {
+		teachers[i].rating = 0;
+	}
+}
+
+function getTeachersRating () {
+	var actionType = '[getTeachersRating]:';
+	if (students.length !== studentPriorityList.length) {
+		console.log(`Only ${studentPriorityList.length} of ${students.length} has provided`);
+		return console.log(actionType, 
+			'All students must make the priority lists before calculating the Rating.');
+	}
+	clearTeachersRating();
+	for (var i = 0; i < studentPriorityList.length; i++) {
+		var teachersList = studentPriorityList[i].teachersList;
+		for (var e = 0; e < teachersList.length; e++) {
+			var RATING = teachersList.length - teachersList[e];
+			teachers[e].rating += RATING;
+		}
+	}
+	return console.log(actionType, 'All teachers were got the rating.');
+}
+
+getTeachersRating();
 
 function sortTeachersByRating () {
-
+	teachers.sort(function (a, b) {
+		if (a.rating > b.rating) {
+			return -1;
+		} else {
+			return 1
+		}
+	});
+	console.log(teachers);
 }
+
+sortTeachersByRating();
+sortStudentsByRating();
 
 function sortStudentsByRating () {
-
+	students.sort(function (a, b) {
+		if (a.rating > b.rating) {
+			return -1;
+		} else {
+			return 1
+		}
+	});
+	console.log(students);
 }
 
-function spreadStudentsBetweenTeachers () {
-
+function sortStudentsBetweenTeachers () {
+	// How many students on 1 teacher?
+	var k = Math.floor(students.length / teachers.length);
+	for (var i = 0; i < teachers.length; i++) {
+		var sortedPair = {
+			teacher: teachers[i].id,
+			students: []
+		}
+		studentsAndTeachersSorted.push(sortedPair);
+	}
+	console.log(k);
 }
-
-function getTest () {
-
-}
+sortStudentsBetweenTeachers();
 
 
 
