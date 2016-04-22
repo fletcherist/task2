@@ -426,6 +426,7 @@ function sortStudentsBetweenTeachers () {
 		studentsAndTeachersSorted.push(sortedPair);
 	}
 	console.log(k);
+	
 }
 sortStudentsBetweenTeachers();
 
