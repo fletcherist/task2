@@ -235,7 +235,7 @@ function setMark (mark) {
 	return console.log(actionType, `Mark ${mark.mark} was successfully set on (${mark.target})`);
 }
 
-// setMark({type: 2, target: 1, taskID: 0, mark: 7});
+	// setMark({type: 2, target: 1, taskID: 0, mark: 7});
 
 
 // This is the function for student
@@ -385,7 +385,6 @@ function getStudentsRating () {
 	}
 	return console.log(actionType, 'All students were got the rating.');
 }
-getStudentsRating();
 
 
 function clearStudentsRating () {
@@ -418,7 +417,6 @@ function getTeachersRating () {
 	return console.log(actionType, 'All teachers were got the rating.');
 }
 
-getTeachersRating();
 
 function sortTeachersByRating () {
 	teachers.sort(function (a, b) {
@@ -430,9 +428,6 @@ function sortTeachersByRating () {
 	});
 	console.log(teachers);
 }
-
-sortTeachersByRating();
-sortStudentsByRating();
 
 function sortStudentsByRating () {
 	students.sort(function (a, b) {
@@ -446,6 +441,12 @@ function sortStudentsByRating () {
 }
 
 function sortStudentsBetweenTeachers () {
+	getStudentsRating();
+	getTeachersRating();
+
+	sortTeachersByRating();
+	sortStudentsByRating();
+
 	var studentCounter = 0;
 	// How many students on 1 teacher?
 	var k = Math.ceil(students.length / teachers.length);
@@ -468,6 +469,7 @@ function sortStudentsBetweenTeachers () {
 		console.log(sortedPair, k);
 	}
 }
+
 sortStudentsBetweenTeachers();
 
 
