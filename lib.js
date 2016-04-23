@@ -1,3 +1,5 @@
+'use strict';
+
 teachers = [
  {
  	id: 0,
@@ -59,13 +61,6 @@ function addStudent (student) {
 	return console.log(actionType, `Student ${student.name} ${student.surname} has been added successfully.`);
 }
 
-addStudent({name: 'Issac', surname: 'Newton', phone: '+79109732483'});
-addStudent({name: 'Mark', surname: 'Twen', phone: '+79109732483'});
-addStudent({name: 'Fyodor', surname: 'Dostoevsky', phone: '+79109732483'});
-addStudent({name: 'Lao', surname: 'Tzu', phone: '+79109732483'});
-addStudent({name: 'Leo', surname: 'Tolstoy', phone: '+79109732483'});
-addStudent({name: 'Phil', surname: 'Romanov', phone: '+79109732483'});
-addStudent({name: 'Friendih', surname: 'Nietcshe', phone: '+79109732483'});
 // showStudents(students);
 
 function removeStudent (id) {
@@ -203,12 +198,6 @@ function createTask (task) {
 	return console.log(actionType, `Task «${task.name}» — ${task.description} — has been created.`);
 }
 
-// createTask({
-// 	type: 2,
-// 	name: 'name',
-// 	description: 'Do a realtime application',
-// 	participants: 0
-// });
 
 function setMark (mark) {
 	var actionType = '[setMark]:';
@@ -260,35 +249,6 @@ function createStudentPriorityList (list) {
 	return console.log(actionType, `Priority list of teachers for the student ${list.studentID} has been created successfully.`);
 }
 
-createStudentPriorityList({
-	studentID: 0,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 1,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 2,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 3,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 4,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 5,
-	teachersList: [0, 1, 2, 3]
-});
-createStudentPriorityList({
-	studentID: 6,
-	teachersList: [0, 1, 2, 3]
-});
-
 
 // This is the function for teacher
 // to make a priority-oriented list of the student he/she wants to teach.
@@ -337,23 +297,6 @@ function teacherWithIdExists (id) {
 	}
 	return false;
 }
-
-createTeacherPriorityList({
-	teacherID: 0,
-	studentsList: [0, 1, 2, 3, 4, 5, 6]
-});
-createTeacherPriorityList({
-	teacherID: 1,
-	studentsList: [0, 1, 2, 3, 4, 5, 6]
-});
-createTeacherPriorityList({
-	teacherID: 2,
-	studentsList: [0, 1, 2, 3, 4, 5, 6]
-});
-createTeacherPriorityList({
-	teacherID: 3,
-	studentsList: [0, 1, 2, 3, 4, 5, 6]
-});
 
 // The description and philosophy of the principles of
 // the following algorithm in the README.md
@@ -469,8 +412,6 @@ function sortStudentsBetweenTeachers () {
 		console.log(sortedPair, k);
 	}
 }
-
-sortStudentsBetweenTeachers();
 
 
 
